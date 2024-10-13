@@ -12,7 +12,6 @@ function SearchBar({ products = [] }) {
   return (
     <div className="w-full flex items-center flex-col justify-center m-5 relative">
       <label htmlFor="search" className="w-2/4 text-md font-bold text-white mb-2">
-        Looking for something?
       </label>
 
       <input
