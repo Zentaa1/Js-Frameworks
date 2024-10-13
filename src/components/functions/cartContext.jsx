@@ -1,47 +1,45 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useState, useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 
-const CartContext = createContext();
-
-export const useCart = () => useContext(CartContext);
+export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-    const [cart, setCart] = useState([]);
+    const [cartItems, setCartItems] = useState(() => {
+        const savedCart = localStorage.getItem("cart");
+        return savedCart ? JSON.parse(savedCart) : [];
+    });
 
     useEffect(() => {
-        const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
-        setCart(savedCart);
-    }, []);
+        localStorage.setItem("cart", JSON.stringify(cartItems));
+    }, [cartItems]);
 
-    useEffect(() => {
-        localStorage.setItem("cart", JSON.stringify(cart));
-        console.log("Cart saved to localStorage:", cart);
-    }, [cart]);
+    // Function to calculate total price
+    const totalPrice = useMemo(() => {
+        return cartItems.reduce((total, item) => total + item.price, 0);
+    }, [cartItems]);
 
-    const addToCart = (product) => {
-        setCart((prevCart) => {
-            const productExists = prevCart.find((item) => item.id === product.id);
-            if (productExists) {
-                return prevCart.map((item) =>
-                    item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-                );
-            } else {
-                return [ ...prevCart, { ...product, quantity: 1 }];
-            }
-        });
+    const addToCart = (item) => {
+        setCartItems((prevItems) => [...prevItems, item]);
     };
 
-    const removeFromCart = (productId) => {
-        setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
+    const removeFromCart = (id) => {
+        setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+    };
+
+    const clearCart = () => {
+        setCartItems([]);
     };
 
     return (
-        <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+        <CartContext.Provider
+            value={{ cartItems, addToCart, removeFromCart, clearCart, totalPrice }}
+        >
             {children}
         </CartContext.Provider>
     );
 };
 
+
 CartProvider.propTypes = {
     children: PropTypes.node.isRequired,
-  };
+};

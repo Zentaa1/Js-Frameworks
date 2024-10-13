@@ -10,7 +10,7 @@ import Contact from './pages/Contact';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import CheckoutSuccess from './pages/CheckoutSuccess';
-import { CartProvider } from './components/functions/cartContext';
+import { CartProvider } from './components/functions/CartContext.jsx';
 
 const App = () => {
   return (
@@ -33,7 +33,7 @@ const App = () => {
           <Footer />
         </Router>
       </div>
-    </CartProvider>
+      </CartProvider>
   );
 };
 

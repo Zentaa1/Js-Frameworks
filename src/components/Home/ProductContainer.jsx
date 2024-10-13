@@ -1,5 +1,31 @@
 import { useEffect, useState } from 'react';
 import { fetchData } from '../functions/fetchData';
+import PropTypes from 'prop-types';
+import Loading from '../Loading';
+
+const StarRating = ({ rating }) => {
+  return (
+    <div className="flex mt-2">
+      {[...Array(5)].map((_, index) => (
+        <svg
+          key={index}
+          xmlns="http://www.w3.org/2000/svg"
+          fill={index < rating ? "yellow" : "none"}
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth="2"
+          className="w-5 h-5 text-yellow-400"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+          />
+        </svg>
+      ))}
+    </div>
+  );
+};
 
 const ProductContainer = () => {
   const [data, setData] = useState([]);
@@ -10,7 +36,7 @@ const ProductContainer = () => {
     fetchData(setData, setLoading, setError);
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loading />;
   if (error) return <p>Error: {error}</p>;
 
   const generateProductPageLink = (item) => `/products/${item.id}`;
@@ -29,6 +55,7 @@ const ProductContainer = () => {
               className="h-48 w-full object-cover rounded-lg mb-4"
             />
             <h3 className="text-lg font-bold">{item.title}</h3>
+
             {item.price === item.discountedPrice ? (
                 <p className="text-customOrange font-semibold mt-2">
                     ${item.discountedPrice}
@@ -46,6 +73,7 @@ const ProductContainer = () => {
               href={generateProductPageLink(item)}>
                 View
               </a>
+              <StarRating rating={item.rating} />
             </div>
           </div>
         ))}
@@ -55,3 +83,7 @@ const ProductContainer = () => {
 };
 
 export default ProductContainer;
+
+StarRating.propTypes = {
+  rating: PropTypes.node.isRequired, 
+};

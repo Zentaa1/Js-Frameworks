@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FaShoppingCart } from "react-icons/fa";
+import { CartContext } from '../components/functions/CartContext';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { cartItems } = useContext(CartContext);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -20,11 +22,17 @@ const Navbar = () => {
     setIsMenuOpen(false);
   };
 
+  const totalCartItems = cartItems.length > 0
+    ? cartItems.reduce((total, item) => total + (item.quantity || 1), 0)
+    : 0;
+
   return (
     <div className='bg-secondary text-pageText font-bold text-xl rounded-br-md mb-10'>
       <div className='container mx-auto flex justify-between items-center py-2'>
         <div>
-          <h2 className='text-2xl'>ShopExtra</h2>
+          <Link to='/'>
+            <h2 className='text-2xl'>ShopExtra</h2>
+          </Link>
         </div>
         <div className='md:flex md:items-center'>
           <div className='md:hidden'>
@@ -38,7 +46,14 @@ const Navbar = () => {
             <Link className='mx-2 hover:text-customOrange hover:underline' to='/'>Home</Link>
             <Link className='mx-2 hover:text-customOrange hover:underline' to='/contact'>Contact Us</Link>
             <Link className='mx-2 hover:text-customOrange hover:underline' to='/about'>About Us</Link>
-            <Link className='my-4 hover:text-customOrange hover:underline' to='/cart'><FaShoppingCart /></Link>
+            <Link className='mx-4 hover:text-customOrange hover:underline relative' to='/cart'>
+              <FaShoppingCart />
+              {totalCartItems > 0 && (
+                <span className="absolute -top-3 -right-4 bg-customOrange text-white text-sm rounded-full h-5 w-5 flex items-center justify-center">
+                  {totalCartItems}
+                </span>
+              )}
+            </Link>
           </div>
         </div>
       </div>
@@ -55,7 +70,14 @@ const Navbar = () => {
                 <Link className='my-4 hover:text-customOrange hover:underline' to='/' onClick={closeMenu}>Home</Link>
                 <Link className='my-4 hover:text-customOrange hover:underline' to='/contact' onClick={closeMenu}>Contact Us</Link>
                 <Link className='my-4 hover:text-customOrange hover:underline' to='/about' onClick={closeMenu}>About Us</Link>
-                <Link className='my-4 hover:text-customOrange hover:underline' to='/cart' onClick={closeMenu}><FaShoppingCart /></Link>
+                <Link className='my-4 hover:text-customOrange hover:underline relative' to='/cart' onClick={closeMenu}>
+                  <FaShoppingCart />
+                  {totalCartItems > 0 && (
+                    <span className="absolute -top-3 -right-4 bg-customOrange text-white text-sm rounded-full h-5 w-5 flex items-center justify-center">
+                      {totalCartItems}
+                    </span>
+                  )}
+                </Link>
               </div>
             </div>
           </div>
