@@ -20,8 +20,6 @@ const ProductPage = () => {
 
   const item = data.length > 0 ? data.find(item => item.id === productId) : null;
 
-  console.log(item);
-
   if (loading) return <Loading />;
   if (error) return <p>Error: {error}</p>;
   if (!item) return <NotFound />;
