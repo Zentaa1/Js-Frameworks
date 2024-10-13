@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { fetchData } from '../functions/fetchData';
 import PropTypes from 'prop-types';
 import Loading from '../Loading';
+import SearchBar from '../functions/SearchBar';
 
 const StarRating = ({ rating }) => {
   return (
@@ -43,6 +44,7 @@ const ProductContainer = () => {
 
   return (
     <div className="container mx-auto px-4">
+      <SearchBar products={data} />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {data.map((item, index) => (
           <div
