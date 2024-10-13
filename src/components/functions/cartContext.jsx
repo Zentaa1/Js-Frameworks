@@ -13,7 +13,6 @@ export const CartProvider = ({ children }) => {
         localStorage.setItem("cart", JSON.stringify(cartItems));
     }, [cartItems]);
 
-    // Function to calculate total price
     const totalPrice = useMemo(() => {
         return cartItems.reduce((total, item) => total + item.price, 0);
     }, [cartItems]);
