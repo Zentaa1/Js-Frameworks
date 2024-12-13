@@ -40,7 +40,7 @@ Before you begin, ensure you have the following software installed on your machi
   yarn install
   ```
 
-4. **Running the Project**:
+3. **Running the Project**:
   To start the development server, run:
   ```bash
   npm run dev
