@@ -1,5 +1,5 @@
 # ShopExtra - Online 
-## Marius Kjesbu Bjeglerud - Project Exam 2
+## Marius Kjesbu Bjeglerud - Javascript Frameworks
 
 ## Features
 
